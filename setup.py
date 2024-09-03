@@ -14,7 +14,7 @@ requirements = [
     "numpy",
     "torch",
     "torchvision",
-    "PIL",
+    "Pillow",
 ]
 
 setup(

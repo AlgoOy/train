@@ -1,4 +1,4 @@
-numpy,
-torch,
-torchvision,
-PIL,
+numpy
+torch
+torchvision
+Pillow
