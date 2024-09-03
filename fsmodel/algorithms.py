@@ -19,16 +19,10 @@ def maml(
         inner_lr=0.4,
         train=True,
         return_labels=False,
-        deploy=False,
-        multi_gpus=False
+        deploy=False
 ):
     criterion, task_loss, task_acc = loss_fn, [], []
     labels = []
-
-    if multi_gpus:
-        functional_forward = model.module.functional_forward
-    else:
-        functional_forward = model.functional_forward
 
     for meta_batch in x:
         # Get data
@@ -42,7 +36,7 @@ def maml(
         for inner_step in range(inner_train_step):
             # Simply training
             train_label = create_label(fs_config.n_way, fs_config.k_shot).to(fs_config.device)
-            logits = functional_forward(support_set, fast_weights)
+            logits = model.functional_forward(support_set, fast_weights)
             loss = criterion(logits, train_label)
             # Inner gradients update! #
             """ Inner Loop Update """
@@ -59,13 +53,13 @@ def maml(
             """ training / validation """
 
             # Collect gradients for outer loop
-            logits = functional_forward(query_set, fast_weights)
+            logits = model.functional_forward(query_set, fast_weights)
             loss = criterion(logits, val_label)
             task_loss.append(loss)
             task_acc.append(calculate_accuracy(logits, val_label))
         else:
             """ testing """
-            logits = functional_forward(query_set, fast_weights)
+            logits = model.functional_forward(query_set, fast_weights)
             labels.extend(torch.argmax(logits, -1).cpu().numpy())
 
         # 返回 acc, val_label, query_set, fast_weights
