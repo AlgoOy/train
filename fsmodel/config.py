@@ -16,8 +16,16 @@ class Config:
         else:
             self.device = "cpu"
 
+        # 固定随机种子
+        random_seed = 0
+        random.seed(random_seed)
+        np.random.seed(random_seed)
+        torch.manual_seed(random_seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(random_seed)
+
         # 配置参数
-        self.random_seed = 0
+        self.random_seed = random_seed
         self.n_way = 5
         self.k_shot = 5
         self.q_query = 15
@@ -32,10 +40,9 @@ class Config:
         self.test_batches = 1
         self.dataset_path = "./Dataset/R-FSIDS_84_84_RGB/"
 
-    def set_config(self, dataset_path, random_seed=0, train_inner_train_step=3, val_inner_train_step=3, 
+    def set_config(self, dataset_path, train_inner_train_step=3, val_inner_train_step=3, 
                    test_inner_train_step=3, inner_lr=0.1, meta_lr=0.001, meta_batch_size=6,
                    max_epoch=5000, eval_batches=2, test_batches=1):
-        self.random_seed = random_seed
         self.train_inner_train_step = train_inner_train_step
         self.val_inner_train_step = val_inner_train_step
         self.test_inner_train_step = test_inner_train_step
