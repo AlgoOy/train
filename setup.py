@@ -11,10 +11,10 @@ readme = open('README.md').read()
 VERSION = '0.0.1'
 
 requirements = [
-    numpy,
-    torch,
-    torchvision,
-    PIL,
+    "numpy",
+    "torch",
+    "torchvision",
+    "PIL",
 ]
 
 VERSION += "_" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
