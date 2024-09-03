@@ -17,8 +17,6 @@ requirements = [
     "PIL",
 ]
 
-VERSION += "_" + datetime.datetime.now().strftime("%Y%m%d%H%M")
-
 setup(
     name="trainidsnet",
     version=VERSION,
