@@ -5,7 +5,7 @@ import numpy as np
 from . import config as fs_config
 
 
-def get_meta_batch(meta_batch_size, data_loader, iterator):
+def get_meta_batch(meta_batch_size, data_loader, iterator, channel=3, h=84, w=84):
     data = []
     for _ in range(meta_batch_size):
         try:
@@ -17,8 +17,8 @@ def get_meta_batch(meta_batch_size, data_loader, iterator):
             iterator = iter(data_loader)
             task_data = next(iterator)
 
-        train_data = task_data[:, :fs_config.k_shot].reshape(-1, 3, 84, 84)
-        val_data = task_data[:, fs_config.k_shot:].reshape(-1, 3, 84, 84)
+        train_data = task_data[:, :fs_config.k_shot].reshape(-1, channel, h, w)
+        val_data = task_data[:, fs_config.k_shot:].reshape(-1, channel, h, w)
         task_data = torch.cat((train_data, val_data), 0)
         data.append(task_data)
 
