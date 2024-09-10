@@ -906,8 +906,9 @@ class ProxylessNASNets(MyNetwork):
         return net
 
 
-def build_model(net_config):
-    net_config = json.load(open(net_config))
+def build_model(net_config, is_json=True):
+    if is_json:
+        net_config = json.load(open(net_config))
     resolution = net_config['resolution']
     model = ProxylessNASNets.build_from_config(net_config)
     return model, resolution
